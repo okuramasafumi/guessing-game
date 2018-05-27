@@ -3,25 +3,25 @@ require 'securerandom'
 
 class GuessingGame
   def self.play
-    number = random_number
+    @number = random_number
 
     trial_number = 10
     puts "You can try #{trial_number} times."
 
     trial_number.downto(0) do |credit|
       print 'Enter 4 digit number:'
-      input = gets.strip
-      unless input.to_s.size == 4
+      @input = gets.strip
+      unless @input.to_s.size == 4
         puts 'Not 4 digit number.'
         next
       end
-      if input.to_s == number.to_s
+      if @input.to_s == @number.to_s
         win!(credit)
       end
-      calc(number, input)
+      calc
     end
 
-    lose!(number)
+    lose!
   end
 
   def self.random_number
@@ -33,15 +33,15 @@ class GuessingGame
     end
   end
 
-  def self.calc(number, input)
+  def self.calc
     exact = 0
     patrial = 0
     0.upto(3) do |i|
-      n1 = number.to_s[i]
-      n2 = input.to_s[i]
+      n1 = @number.to_s[i]
+      n2 = @input.to_s[i]
       if n1 == n2
         exact += 1
-      elsif number.to_s.include?(n2)
+      elsif @number.to_s.include?(n2)
         patrial += 1
       end
     end
@@ -53,8 +53,8 @@ class GuessingGame
     exit
   end
 
-  def self.lose!(number)
-    puts "You lose! The number was: #{number}"
+  def self.lose!
+    puts "You lose! The number was: #{@number}"
     exit
   end
 end
